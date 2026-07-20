@@ -1,9 +1,14 @@
+import prisma from "@/lib/prisma";
 import { PrismaClient } from "@/generated/prisma/client";
 
 export abstract class BaseRepository {
-  protected prisma: PrismaClient;
 
-  constructor(prisma: PrismaClient) {
-    this.prisma = prisma;
-  }
+    protected prisma: PrismaClient;
+
+    constructor(client: PrismaClient = prisma){
+
+        this.prisma = client;
+
+    }
+
 }

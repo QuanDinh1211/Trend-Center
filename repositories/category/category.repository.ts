@@ -1,58 +1,58 @@
-import { Category, Prisma, PrismaClient } from "@/generated/prisma/client";
-import { BaseRepository } from "../base/base.repository";
+import {
+    Category,
+    Prisma,
+    PrismaClient
+} from "@/generated/prisma/client";
 
-export class CategoryRepository extends BaseRepository {
-  constructor(prisma: PrismaClient) {
-    super(prisma);
-  }
+import { GenericRepository } from "../base/generic.repository";
 
-  async findAll(): Promise<Category[]> {
-    return this.prisma.category.findMany({
-      orderBy: {
-        name: "asc",
-      },
-    });
-  }
+export class CategoryRepository
+extends GenericRepository<
+    Category,
+    Prisma.CategoryCreateInput,
+    Prisma.CategoryUpdateInput
+>{
 
-  async findById(id: string): Promise<Category | null> {
-    return this.prisma.category.findUnique({
-      where: {
-        id,
-      },
-    });
-  }
+    constructor(prisma:PrismaClient){
+        super(prisma);
+    }
 
-  async findBySlug(slug: string): Promise<Category | null> {
-    return this.prisma.category.findUnique({
-      where: {
-        slug,
-      },
-    });
-  }
+    async findAll(){
+        return this.prisma.category.findMany();
+    }
 
-  async create(data: Prisma.CategoryCreateInput): Promise<Category> {
-    return this.prisma.category.create({
-      data,
-    });
-  }
+    async findById(id:string){
+        return this.prisma.category.findUnique({
+            where:{id}
+        });
+    }
 
-  async update(
-    id: string,
-    data: Prisma.CategoryUpdateInput,
-  ): Promise<Category> {
-    return this.prisma.category.update({
-      where: {
-        id,
-      },
-      data,
-    });
-  }
+    async findBySlug(slug:string){
+        return this.prisma.category.findUnique({
+            where:{slug}
+        });
+    }
 
-  async delete(id: string): Promise<Category> {
-    return this.prisma.category.delete({
-      where: {
-        id,
-      },
-    });
-  }
+    async create(data:Prisma.CategoryCreateInput){
+        return this.prisma.category.create({
+            data
+        });
+    }
+
+    async update(
+        id:string,
+        data:Prisma.CategoryUpdateInput
+    ){
+        return this.prisma.category.update({
+            where:{id},
+            data
+        });
+    }
+
+    async delete(id:string){
+        return this.prisma.category.delete({
+            where:{id}
+        });
+    }
+
 }

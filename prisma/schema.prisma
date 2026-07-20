@@ -17,6 +17,14 @@ enum Status {
   INACTIVE
 }
 
+enum CrawlStatus {
+  PENDING
+  RUNNING
+  SUCCESS
+  FAILED
+  PARTIAL
+}
+
 model Category {
   id          String  @id @default(uuid())
   name        String  @db.VarChar(255)
@@ -56,6 +64,10 @@ model Product {
   trendScores      TrendScore[]
   watchList        WatchList?
 
+
+
+  
+  @@index([categoryId])
   @@map("products")
 }
 
@@ -136,6 +148,9 @@ model ProductPlatform {
   priceHistories      PriceHistory[]
   commissionHistories CommissionHistory[]
 
+  @@index([productId])
+  @@index([platformId])
+
   // Ràng buộc: Một sản phẩm chỉ có 1 bản ghi trên 1 nền tảng
   @@unique([productId, platformId])
   @@map("product_platforms")
@@ -202,6 +217,10 @@ model Video {
   platform Platform @relation(fields: [platformId], references: [id], onDelete: Cascade)
   creator  Creator? @relation(fields: [creatorId], references: [id], onDelete: SetNull)
 
+  @@index([productId])
+  @@index([platformId])
+  @@index([categoryId])
+
   @@map("videos")
 }
 
@@ -225,6 +244,8 @@ model TrendScore {
 
   // Quan hệ
   product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
 
   @@map("trend_scores")
 }
@@ -295,7 +316,7 @@ model Crawler {
   description String? @db.Text
 
   lastRunAt  DateTime?
-  lastStatus String?   @db.VarChar(50) // SUCCESS, FAILED, RUNNING, etc.
+  lastStatus CrawlStatus?   @default(RUNNING)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

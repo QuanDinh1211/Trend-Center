@@ -5,9 +5,341 @@
 
 generator client {
   provider = "prisma-client"
-  output   = "../app/generated/prisma"
+  output   = "../generated/prisma"
 }
 
 datasource db {
   provider = "mysql"
+}
+
+enum Status {
+  ACTIVE
+  INACTIVE
+}
+
+model Category {
+  id          String  @id @default(uuid())
+  name        String  @db.VarChar(255)
+  slug        String  @unique @db.VarChar(255)
+  icon        String? @db.VarChar(255)
+  description String? @db.Text
+  status      Status  @default(ACTIVE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // === QUAN HỆ NGƯỢC ===
+  products Product[]
+  keywords Keyword[]
+
+  @@map("categories")
+}
+
+model Product {
+  id          String  @id @default(uuid())
+  categoryId  String
+  name        String  @db.VarChar(255)
+  slug        String  @unique @db.VarChar(255)
+  brand       String? @db.VarChar(100)
+  model       String? @db.VarChar(100)
+  image       String? @db.VarChar(500)
+  description String? @db.Text
+  status      Status  @default(ACTIVE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Quan hệ với Category
+  category         Category          @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  productPlatforms ProductPlatform[]
+  videos           Video[]
+  trendScores      TrendScore[]
+  watchList        WatchList?
+
+  @@map("products")
+}
+
+model Platform {
+  id      String  @id @default(uuid())
+  code    String  @unique @db.VarChar(50)
+  name    String  @db.VarChar(255)
+  logo    String? @db.VarChar(500)
+  website String? @db.VarChar(255)
+  status  Status  @default(ACTIVE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // === QUAN HỆ NGƯỢC ===
+  creators Creator[]
+  products ProductPlatform[]
+  videos   Video[]
+  crawlers Crawler[]
+
+  @@map("platforms")
+}
+
+model Creator {
+  id         String   @id @default(uuid())
+  platformId String
+  creatorId  String   @db.VarChar(100) // ID của creator trên nền tảng (ví dụ: TikTok ID, Shopee ID)
+  name       String   @db.VarChar(255)
+  profileUrl String?  @db.VarChar(500)
+  followers  Int?     @default(0)
+  avatar     String?  @db.VarChar(500)
+  verified   Boolean  @default(false)
+  lastSync   DateTime @default(now())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Quan hệ
+  platform Platform @relation(fields: [platformId], references: [id], onDelete: Cascade)
+
+  // === QUAN HỆ NGƯỢC ===
+  videos Video[]
+
+  @@unique([platformId, creatorId]) // Một creator chỉ tồn tại 1 lần trên 1 platform
+  @@map("creators")
+}
+
+model ProductPlatform {
+  id                String  @id @default(uuid())
+  productId         String
+  platformId        String
+  platformProductId String  @db.VarChar(100) // ID sản phẩm trên nền tảng (ví dụ: Shopee item_id)
+  shopId            String? @db.VarChar(100) // ID shop trên nền tảng
+
+  url       String  @db.Text
+  thumbnail String? @db.Text
+
+  currentPrice    Decimal  @db.Decimal(15, 2)
+  originalPrice   Decimal? @db.Decimal(15, 2)
+  discountPercent Decimal? @db.Decimal(5, 2)
+
+  soldCount   Int      @default(0)
+  rating      Decimal? @db.Decimal(3, 2)
+  reviewCount Int      @default(0)
+  stock       Int      @default(0)
+
+  status   Status   @default(ACTIVE)
+  lastSync DateTime @default(now())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Quan hệ
+  product  Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  platform Platform @relation(fields: [platformId], references: [id], onDelete: Cascade)
+
+  // === QUAN HỆ NGƯỢC ===
+  priceHistories      PriceHistory[]
+  commissionHistories CommissionHistory[]
+
+  // Ràng buộc: Một sản phẩm chỉ có 1 bản ghi trên 1 nền tảng
+  @@unique([productId, platformId])
+  @@map("product_platforms")
+}
+
+model PriceHistory {
+  id                String @id @default(uuid())
+  productPlatformId String
+
+  price           Decimal  @db.Decimal(15, 2)
+  originalPrice   Decimal? @db.Decimal(15, 2)
+  discountPercent Decimal? @db.Decimal(5, 2)
+
+  currency   String   @default("VND") @db.VarChar(10)
+  capturedAt DateTime @default(now())
+
+  // Quan hệ
+  productPlatform ProductPlatform @relation(fields: [productPlatformId], references: [id], onDelete: Cascade)
+
+  @@map("price_histories")
+}
+
+model CommissionHistory {
+  id                String @id @default(uuid())
+  productPlatformId String
+
+  commissionRate   Decimal @db.Decimal(5, 2) // Ví dụ: 12.5 (%)
+  commissionAmount Decimal @db.Decimal(15, 2) // Số tiền hoa hồng
+
+  campaign   String?  @db.VarChar(255) // Tên chiến dịch (nếu có)
+  capturedAt DateTime @default(now())
+
+  // Quan hệ
+  productPlatform ProductPlatform @relation(fields: [productPlatformId], references: [id], onDelete: Cascade)
+
+  @@map("commission_histories")
+}
+
+model Video {
+  id         String  @id @default(uuid())
+  productId  String
+  platformId String
+  creatorId  String? // Có thể null nếu không rõ creator
+
+  videoId   String  @db.VarChar(100) // ID video trên nền tảng (TikTok, YouTube...)
+  title     String  @db.VarChar(500)
+  url       String  @db.Text
+  thumbnail String? @db.Text
+  duration  Int? // Thời lượng video (giây)
+
+  views    Int @default(0)
+  likes    Int @default(0)
+  comments Int @default(0)
+  shares   Int @default(0)
+
+  publishedAt DateTime?
+  capturedAt  DateTime  @default(now())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Quan hệ
+  product  Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  platform Platform @relation(fields: [platformId], references: [id], onDelete: Cascade)
+  creator  Creator? @relation(fields: [creatorId], references: [id], onDelete: SetNull)
+
+  @@map("videos")
+}
+
+model TrendScore {
+  id        String @id @default(uuid())
+  productId String
+
+  googleScore      Decimal? @db.Decimal(5, 2)
+  tiktokScore      Decimal? @db.Decimal(5, 2)
+  shopeeScore      Decimal? @db.Decimal(5, 2)
+  videoScore       Decimal? @db.Decimal(5, 2)
+  priceScore       Decimal? @db.Decimal(5, 2)
+  commissionScore  Decimal? @db.Decimal(5, 2)
+  competitionScore Decimal? @db.Decimal(5, 2)
+  growthScore      Decimal? @db.Decimal(5, 2)
+
+  finalScore     Decimal @db.Decimal(5, 2) // Điểm tổng hợp cuối cùng
+  recommendation String? @db.Text // Gợi ý (ví dụ: "Nên đẩy mạnh", "Cần theo dõi"...)
+
+  calculatedAt DateTime @default(now())
+
+  // Quan hệ
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("trend_scores")
+}
+
+model Keyword {
+  id         String  @id @default(uuid())
+  keyword    String  @unique @db.VarChar(255)
+  categoryId String?
+  status     Status  @default(ACTIVE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Quan hệ
+  category Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+
+  // === QUAN HỆ NGƯỢC ===
+  histories KeywordHistory[]
+
+  @@map("keywords")
+}
+
+model KeywordHistory {
+  id        String @id @default(uuid())
+  keywordId String
+
+  searchVolume   Int      @default(0) // Lượng tìm kiếm
+  growthPercent  Decimal? @db.Decimal(5, 2) // Tăng trưởng (%)
+  trendDirection String?  @db.VarChar(20) // UP, DOWN, STABLE
+
+  capturedAt DateTime @default(now())
+
+  // Quan hệ
+  keyword Keyword @relation(fields: [keywordId], references: [id], onDelete: Cascade)
+
+  @@index([keywordId, capturedAt]) // Tăng tốc độ query lịch sử
+  @@map("keyword_histories")
+}
+
+model WatchList {
+  id        String @id @default(uuid())
+  productId String
+  priority  Int    @default(1) // 1 = Thấp, 2 = Trung bình, 3 = Cao
+
+  note        String?  @db.Text
+  targetPrice Decimal? @db.Decimal(15, 2)
+
+  notifyWhenTrend Boolean @default(true) // Có thông báo khi có xu hướng thay đổi không?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Quan hệ
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([productId]) // Mỗi sản phẩm chỉ theo dõi 1 lần
+  @@map("watch_lists")
+}
+
+model Crawler {
+  id         String @id @default(uuid())
+  name       String @db.VarChar(255)
+  platformId String
+
+  cron    String  @db.VarChar(100) // Lịch chạy (cron job)
+  enabled Boolean @default(true)
+
+  description String? @db.Text
+
+  lastRunAt  DateTime?
+  lastStatus String?   @db.VarChar(50) // SUCCESS, FAILED, RUNNING, etc.
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Quan hệ
+  platform Platform @relation(fields: [platformId], references: [id], onDelete: Cascade)
+
+  // === QUAN HỆ NGƯỢC ===
+  logs CrawlLog[]
+
+  @@map("crawlers")
+}
+
+model CrawlLog {
+  id        String @id @default(uuid())
+  crawlerId String
+
+  status      String @db.VarChar(50) // SUCCESS, FAILED, PARTIAL, RUNNING
+  totalRecord Int    @default(0)
+  duration    Int? // Thời gian chạy (giây)
+
+  message    String?   @db.Text // Thông báo lỗi hoặc ghi chú
+  startedAt  DateTime
+  finishedAt DateTime?
+
+  createdAt DateTime @default(now())
+
+  // Quan hệ
+  crawler Crawler @relation(fields: [crawlerId], references: [id], onDelete: Cascade)
+
+  @@index([crawlerId, startedAt])
+  @@map("crawl_logs")
+}
+
+model DailyReport {
+  id         String   @id @default(uuid())
+  reportDate DateTime @unique // Ngày báo cáo (ví dụ: 2025-07-20)
+
+  topProducts    Json? // JSON chứa top sản phẩm
+  topKeywords    Json? // JSON chứa top từ khóa
+  summary        String? @db.Text // Tóm tắt báo cáo
+  recommendation String? @db.Text // Gợi ý hành động
+
+  createdAt DateTime @default(now())
+
+  @@map("daily_reports")
 }

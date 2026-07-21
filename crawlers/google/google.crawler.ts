@@ -7,8 +7,6 @@ import { GoogleMapper } from "./google.mapper";
 import { GoogleTrendsProvider } from "./providers";
 
 export class GoogleCrawler implements ICrawler<any> {
-  readonly name = "Google Trends";
-  readonly isEnabled = true;
   constructor(
     private readonly client = new GoogleClient(new GoogleTrendsProvider()),
 
@@ -16,6 +14,12 @@ export class GoogleCrawler implements ICrawler<any> {
 
     private readonly mapper = new GoogleMapper(),
   ) {}
+
+  readonly name = "Google";
+
+  isEnabled(): boolean {
+    return true;
+  }
 
   async crawl(): Promise<CrawlResult<any>> {
     const startedAt = new Date();

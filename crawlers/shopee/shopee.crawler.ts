@@ -8,8 +8,6 @@ import { ShopeeMapper } from "./shopee.mapper";
 import { DataSourceProvider } from "./providers";
 
 export class ShopeeCrawler implements ICrawler<any> {
-  readonly name = "Shopee";
-  readonly isEnabled = true;
   constructor(
     private readonly client = new ShopeeClient(new DataSourceProvider()),
 
@@ -17,6 +15,12 @@ export class ShopeeCrawler implements ICrawler<any> {
 
     private readonly mapper = new ShopeeMapper(),
   ) {}
+
+  readonly name = "Shopee";
+
+  isEnabled(): boolean {
+    return true;
+  }
 
   async crawl(): Promise<CrawlResult<any>> {
     const startedAt = new Date();

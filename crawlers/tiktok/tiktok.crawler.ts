@@ -8,8 +8,6 @@ import { TikTokMapper } from "./tiktok.mapper";
 import { ApifyProvider } from "./providers";
 
 export class TikTokCrawler implements ICrawler<any> {
-  readonly name = "TikTok";
-  readonly isEnabled = true;
   constructor(
     private readonly client = new TikTokClient(new ApifyProvider()),
 
@@ -17,6 +15,9 @@ export class TikTokCrawler implements ICrawler<any> {
 
     private readonly mapper = new TikTokMapper(),
   ) {}
+
+  readonly name = "Shopee";
+  readonly isEnabled = true;
 
   async crawl(): Promise<CrawlResult<any>> {
     const startedAt = new Date();

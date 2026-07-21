@@ -5,7 +5,7 @@ export interface CrawlResult<T> {
 
   total: number;
 
-  data: T[];
+  data: T[] | T;
 
   startedAt: Date;
 

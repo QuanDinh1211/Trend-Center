@@ -1,9 +1,8 @@
-import { ITikTokProvider } from "./providers";
+import { IShopeeProvider } from "./providers/shopee.provider.interface";
 
-export class TikTokClient {
-
+export class ShopeeClient {
   constructor(
-    private readonly provider: ITikTokProvider
+    private readonly provider: IShopeeProvider
   ) {}
 
   async fetchTrending() {
@@ -17,5 +16,4 @@ export class TikTokClient {
   async fetchProduct(productId: string) {
     return this.provider.fetchProduct(productId);
   }
-
 }

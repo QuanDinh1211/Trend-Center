@@ -7,6 +7,8 @@ import { GoogleMapper } from "./google.mapper";
 import { GoogleTrendsProvider } from "./providers";
 
 export class GoogleCrawler implements ICrawler<any> {
+  readonly name = "Google Trends";
+  readonly isEnabled = true;
   constructor(
     private readonly client = new GoogleClient(new GoogleTrendsProvider()),
 

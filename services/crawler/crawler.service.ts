@@ -120,7 +120,7 @@ export class CrawlerService
     }
 
     await this.repository.update(id, {
-      lastStatus: "STOPPED",
+      lastStatus: "FAILED",
     });
   }
 }

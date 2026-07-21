@@ -219,7 +219,7 @@ model Video {
 
   @@index([productId])
   @@index([platformId])
-  @@index([categoryId])
+  @@index([creatorId])
 
   @@map("videos")
 }

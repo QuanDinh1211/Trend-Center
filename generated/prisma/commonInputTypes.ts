@@ -273,6 +273,23 @@ export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedDateTimeNullableFilter<$PrismaModel>
 }
 
+export type EnumCrawlStatusNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.CrawlStatus | Prisma.EnumCrawlStatusFieldRefInput<$PrismaModel> | null
+  in?: $Enums.CrawlStatus[] | null
+  notIn?: $Enums.CrawlStatus[] | null
+  not?: Prisma.NestedEnumCrawlStatusNullableFilter<$PrismaModel> | $Enums.CrawlStatus | null
+}
+
+export type EnumCrawlStatusNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.CrawlStatus | Prisma.EnumCrawlStatusFieldRefInput<$PrismaModel> | null
+  in?: $Enums.CrawlStatus[] | null
+  notIn?: $Enums.CrawlStatus[] | null
+  not?: Prisma.NestedEnumCrawlStatusNullableWithAggregatesFilter<$PrismaModel> | $Enums.CrawlStatus | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumCrawlStatusNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumCrawlStatusNullableFilter<$PrismaModel>
+}
+
 export type JsonNullableFilter<$PrismaModel = never> =
 | Prisma.PatchUndefined<
     Prisma.Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
@@ -598,6 +615,23 @@ export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
   _min?: Prisma.NestedDateTimeNullableFilter<$PrismaModel>
   _max?: Prisma.NestedDateTimeNullableFilter<$PrismaModel>
+}
+
+export type NestedEnumCrawlStatusNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.CrawlStatus | Prisma.EnumCrawlStatusFieldRefInput<$PrismaModel> | null
+  in?: $Enums.CrawlStatus[] | null
+  notIn?: $Enums.CrawlStatus[] | null
+  not?: Prisma.NestedEnumCrawlStatusNullableFilter<$PrismaModel> | $Enums.CrawlStatus | null
+}
+
+export type NestedEnumCrawlStatusNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.CrawlStatus | Prisma.EnumCrawlStatusFieldRefInput<$PrismaModel> | null
+  in?: $Enums.CrawlStatus[] | null
+  notIn?: $Enums.CrawlStatus[] | null
+  not?: Prisma.NestedEnumCrawlStatusNullableWithAggregatesFilter<$PrismaModel> | $Enums.CrawlStatus | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumCrawlStatusNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumCrawlStatusNullableFilter<$PrismaModel>
 }
 
 export type NestedJsonNullableFilter<$PrismaModel = never> =

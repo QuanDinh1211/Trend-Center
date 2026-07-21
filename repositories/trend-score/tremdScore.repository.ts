@@ -1,10 +1,5 @@
-import {
-  TrendScore,
-  Prisma,
-  PrismaClient,
-} from "@/generated/prisma/client";
+import { TrendScore, Prisma, PrismaClient } from "@/generated/prisma/client";
 import { GenericRepository } from "../base/generic.repository";
-
 
 export class TrendScoreRepository extends GenericRepository<
   TrendScore,
@@ -49,6 +44,40 @@ export class TrendScoreRepository extends GenericRepository<
     return this.prisma.trendScore.update({
       where: { id },
       data,
+    });
+  }
+
+  async upsertByProductId(
+    productId: string,
+    data: Prisma.TrendScoreCreateInput | Prisma.TrendScoreUpdateInput,
+  ) {
+    const existed = await this.prisma.trendScore.findFirst({
+      where: {
+        productId,
+      },
+    });
+
+    if (existed) {
+      return this.prisma.trendScore.update({
+        where: {
+          id: existed.id,
+        },
+        data,
+      });
+    }
+
+    const { product: _product, ...rest } = data as any;
+
+    return this.prisma.trendScore.create({
+      data: {
+        product: {
+          connect: {
+            id: productId,
+          },
+        },
+        finalScore: 0,
+        ...rest,
+      },
     });
   }
 

@@ -1,10 +1,5 @@
-import {
-  Keyword,
-  Prisma,
-  PrismaClient,
-} from "@/generated/prisma/client";
+import { Keyword, Prisma, PrismaClient } from "@/generated/prisma/client";
 import { GenericRepository } from "../base/generic.repository";
-
 
 export class KeywordRepository extends GenericRepository<
   Keyword,
@@ -52,5 +47,54 @@ export class KeywordRepository extends GenericRepository<
     return this.prisma.keyword.delete({
       where: { id },
     });
+  }
+  async search(keyword: string): Promise<Keyword[]> {
+    return this.prisma.keyword.findMany({
+      where: {
+        keyword: {
+          contains: keyword,
+        },
+      },
+      include: {
+        category: true,
+      },
+      orderBy: {
+        keyword: "asc",
+      },
+    });
+  }
+
+  async findByCategory(categoryId: string): Promise<Keyword[]> {
+    return this.prisma.keyword.findMany({
+      where: {
+        categoryId,
+      },
+      include: {
+        category: true,
+      },
+      orderBy: {
+        keyword: "asc",
+      },
+    });
+  }
+
+  async findTrending(limit = 100): Promise<Keyword[]> {
+    const histories = await this.prisma.keywordHistory.findMany({
+      orderBy: {
+        growthPercent: "desc",
+      },
+
+      take: limit,
+
+      include: {
+        keyword: {
+          include: {
+            category: true,
+          },
+        },
+      },
+    });
+
+    return histories.map((item) => item.keyword);
   }
 }

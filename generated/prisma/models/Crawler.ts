@@ -32,7 +32,7 @@ export type CrawlerMinAggregateOutputType = {
   enabled: boolean | null
   description: string | null
   lastRunAt: Date | null
-  lastStatus: string | null
+  lastStatus: $Enums.CrawlStatus | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -45,7 +45,7 @@ export type CrawlerMaxAggregateOutputType = {
   enabled: boolean | null
   description: string | null
   lastRunAt: Date | null
-  lastStatus: string | null
+  lastStatus: $Enums.CrawlStatus | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -185,7 +185,7 @@ export type CrawlerGroupByOutputType = {
   enabled: boolean
   description: string | null
   lastRunAt: Date | null
-  lastStatus: string | null
+  lastStatus: $Enums.CrawlStatus | null
   createdAt: Date
   updatedAt: Date
   _count: CrawlerCountAggregateOutputType | null
@@ -219,7 +219,7 @@ export type CrawlerWhereInput = {
   enabled?: Prisma.BoolFilter<"Crawler"> | boolean
   description?: Prisma.StringNullableFilter<"Crawler"> | string | null
   lastRunAt?: Prisma.DateTimeNullableFilter<"Crawler"> | Date | string | null
-  lastStatus?: Prisma.StringNullableFilter<"Crawler"> | string | null
+  lastStatus?: Prisma.EnumCrawlStatusNullableFilter<"Crawler"> | $Enums.CrawlStatus | null
   createdAt?: Prisma.DateTimeFilter<"Crawler"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Crawler"> | Date | string
   platform?: Prisma.XOR<Prisma.PlatformScalarRelationFilter, Prisma.PlatformWhereInput>
@@ -253,7 +253,7 @@ export type CrawlerWhereUniqueInput = Prisma.AtLeast<{
   enabled?: Prisma.BoolFilter<"Crawler"> | boolean
   description?: Prisma.StringNullableFilter<"Crawler"> | string | null
   lastRunAt?: Prisma.DateTimeNullableFilter<"Crawler"> | Date | string | null
-  lastStatus?: Prisma.StringNullableFilter<"Crawler"> | string | null
+  lastStatus?: Prisma.EnumCrawlStatusNullableFilter<"Crawler"> | $Enums.CrawlStatus | null
   createdAt?: Prisma.DateTimeFilter<"Crawler"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Crawler"> | Date | string
   platform?: Prisma.XOR<Prisma.PlatformScalarRelationFilter, Prisma.PlatformWhereInput>
@@ -287,7 +287,7 @@ export type CrawlerScalarWhereWithAggregatesInput = {
   enabled?: Prisma.BoolWithAggregatesFilter<"Crawler"> | boolean
   description?: Prisma.StringNullableWithAggregatesFilter<"Crawler"> | string | null
   lastRunAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Crawler"> | Date | string | null
-  lastStatus?: Prisma.StringNullableWithAggregatesFilter<"Crawler"> | string | null
+  lastStatus?: Prisma.EnumCrawlStatusNullableWithAggregatesFilter<"Crawler"> | $Enums.CrawlStatus | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Crawler"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Crawler"> | Date | string
 }
@@ -299,7 +299,7 @@ export type CrawlerCreateInput = {
   enabled?: boolean
   description?: string | null
   lastRunAt?: Date | string | null
-  lastStatus?: string | null
+  lastStatus?: $Enums.CrawlStatus | null
   createdAt?: Date | string
   updatedAt?: Date | string
   platform: Prisma.PlatformCreateNestedOneWithoutCrawlersInput
@@ -314,7 +314,7 @@ export type CrawlerUncheckedCreateInput = {
   enabled?: boolean
   description?: string | null
   lastRunAt?: Date | string | null
-  lastStatus?: string | null
+  lastStatus?: $Enums.CrawlStatus | null
   createdAt?: Date | string
   updatedAt?: Date | string
   logs?: Prisma.CrawlLogUncheckedCreateNestedManyWithoutCrawlerInput
@@ -327,7 +327,7 @@ export type CrawlerUpdateInput = {
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastRunAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  lastStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastStatus?: Prisma.NullableEnumCrawlStatusFieldUpdateOperationsInput | $Enums.CrawlStatus | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   platform?: Prisma.PlatformUpdateOneRequiredWithoutCrawlersNestedInput
@@ -342,7 +342,7 @@ export type CrawlerUncheckedUpdateInput = {
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastRunAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  lastStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastStatus?: Prisma.NullableEnumCrawlStatusFieldUpdateOperationsInput | $Enums.CrawlStatus | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   logs?: Prisma.CrawlLogUncheckedUpdateManyWithoutCrawlerNestedInput
@@ -356,7 +356,7 @@ export type CrawlerCreateManyInput = {
   enabled?: boolean
   description?: string | null
   lastRunAt?: Date | string | null
-  lastStatus?: string | null
+  lastStatus?: $Enums.CrawlStatus | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -368,7 +368,7 @@ export type CrawlerUpdateManyMutationInput = {
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastRunAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  lastStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastStatus?: Prisma.NullableEnumCrawlStatusFieldUpdateOperationsInput | $Enums.CrawlStatus | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -381,7 +381,7 @@ export type CrawlerUncheckedUpdateManyInput = {
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastRunAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  lastStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastStatus?: Prisma.NullableEnumCrawlStatusFieldUpdateOperationsInput | $Enums.CrawlStatus | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -488,6 +488,10 @@ export type CrawlerUncheckedUpdateManyWithoutPlatformNestedInput = {
   deleteMany?: Prisma.CrawlerScalarWhereInput | Prisma.CrawlerScalarWhereInput[]
 }
 
+export type NullableEnumCrawlStatusFieldUpdateOperationsInput = {
+  set?: $Enums.CrawlStatus | null
+}
+
 export type CrawlerCreateNestedOneWithoutLogsInput = {
   create?: Prisma.XOR<Prisma.CrawlerCreateWithoutLogsInput, Prisma.CrawlerUncheckedCreateWithoutLogsInput>
   connectOrCreate?: Prisma.CrawlerCreateOrConnectWithoutLogsInput
@@ -509,7 +513,7 @@ export type CrawlerCreateWithoutPlatformInput = {
   enabled?: boolean
   description?: string | null
   lastRunAt?: Date | string | null
-  lastStatus?: string | null
+  lastStatus?: $Enums.CrawlStatus | null
   createdAt?: Date | string
   updatedAt?: Date | string
   logs?: Prisma.CrawlLogCreateNestedManyWithoutCrawlerInput
@@ -522,7 +526,7 @@ export type CrawlerUncheckedCreateWithoutPlatformInput = {
   enabled?: boolean
   description?: string | null
   lastRunAt?: Date | string | null
-  lastStatus?: string | null
+  lastStatus?: $Enums.CrawlStatus | null
   createdAt?: Date | string
   updatedAt?: Date | string
   logs?: Prisma.CrawlLogUncheckedCreateNestedManyWithoutCrawlerInput
@@ -565,7 +569,7 @@ export type CrawlerScalarWhereInput = {
   enabled?: Prisma.BoolFilter<"Crawler"> | boolean
   description?: Prisma.StringNullableFilter<"Crawler"> | string | null
   lastRunAt?: Prisma.DateTimeNullableFilter<"Crawler"> | Date | string | null
-  lastStatus?: Prisma.StringNullableFilter<"Crawler"> | string | null
+  lastStatus?: Prisma.EnumCrawlStatusNullableFilter<"Crawler"> | $Enums.CrawlStatus | null
   createdAt?: Prisma.DateTimeFilter<"Crawler"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Crawler"> | Date | string
 }
@@ -577,7 +581,7 @@ export type CrawlerCreateWithoutLogsInput = {
   enabled?: boolean
   description?: string | null
   lastRunAt?: Date | string | null
-  lastStatus?: string | null
+  lastStatus?: $Enums.CrawlStatus | null
   createdAt?: Date | string
   updatedAt?: Date | string
   platform: Prisma.PlatformCreateNestedOneWithoutCrawlersInput
@@ -591,7 +595,7 @@ export type CrawlerUncheckedCreateWithoutLogsInput = {
   enabled?: boolean
   description?: string | null
   lastRunAt?: Date | string | null
-  lastStatus?: string | null
+  lastStatus?: $Enums.CrawlStatus | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -619,7 +623,7 @@ export type CrawlerUpdateWithoutLogsInput = {
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastRunAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  lastStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastStatus?: Prisma.NullableEnumCrawlStatusFieldUpdateOperationsInput | $Enums.CrawlStatus | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   platform?: Prisma.PlatformUpdateOneRequiredWithoutCrawlersNestedInput
@@ -633,7 +637,7 @@ export type CrawlerUncheckedUpdateWithoutLogsInput = {
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastRunAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  lastStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastStatus?: Prisma.NullableEnumCrawlStatusFieldUpdateOperationsInput | $Enums.CrawlStatus | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -645,7 +649,7 @@ export type CrawlerCreateManyPlatformInput = {
   enabled?: boolean
   description?: string | null
   lastRunAt?: Date | string | null
-  lastStatus?: string | null
+  lastStatus?: $Enums.CrawlStatus | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -657,7 +661,7 @@ export type CrawlerUpdateWithoutPlatformInput = {
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastRunAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  lastStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastStatus?: Prisma.NullableEnumCrawlStatusFieldUpdateOperationsInput | $Enums.CrawlStatus | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   logs?: Prisma.CrawlLogUpdateManyWithoutCrawlerNestedInput
@@ -670,7 +674,7 @@ export type CrawlerUncheckedUpdateWithoutPlatformInput = {
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastRunAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  lastStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastStatus?: Prisma.NullableEnumCrawlStatusFieldUpdateOperationsInput | $Enums.CrawlStatus | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   logs?: Prisma.CrawlLogUncheckedUpdateManyWithoutCrawlerNestedInput
@@ -683,7 +687,7 @@ export type CrawlerUncheckedUpdateManyWithoutPlatformInput = {
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastRunAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  lastStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastStatus?: Prisma.NullableEnumCrawlStatusFieldUpdateOperationsInput | $Enums.CrawlStatus | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -771,7 +775,7 @@ export type $CrawlerPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     enabled: boolean
     description: string | null
     lastRunAt: Date | null
-    lastStatus: string | null
+    lastStatus: $Enums.CrawlStatus | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["crawler"]>
@@ -1152,7 +1156,7 @@ export interface CrawlerFieldRefs {
   readonly enabled: Prisma.FieldRef<"Crawler", 'Boolean'>
   readonly description: Prisma.FieldRef<"Crawler", 'String'>
   readonly lastRunAt: Prisma.FieldRef<"Crawler", 'DateTime'>
-  readonly lastStatus: Prisma.FieldRef<"Crawler", 'String'>
+  readonly lastStatus: Prisma.FieldRef<"Crawler", 'CrawlStatus'>
   readonly createdAt: Prisma.FieldRef<"Crawler", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Crawler", 'DateTime'>
 }

@@ -1840,8 +1840,7 @@ export const CrawlerOrderByRelevanceFieldEnum = {
   name: 'name',
   platformId: 'platformId',
   cron: 'cron',
-  description: 'description',
-  lastStatus: 'lastStatus'
+  description: 'description'
 } as const
 
 export type CrawlerOrderByRelevanceFieldEnum = (typeof CrawlerOrderByRelevanceFieldEnum)[keyof typeof CrawlerOrderByRelevanceFieldEnum]
@@ -1928,6 +1927,13 @@ export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
  * Reference to a field of type 'Decimal'
  */
 export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
+    
+
+
+/**
+ * Reference to a field of type 'CrawlStatus'
+ */
+export type EnumCrawlStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CrawlStatus'>
     
 
 

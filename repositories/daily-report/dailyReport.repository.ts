@@ -1,10 +1,5 @@
-import {
-  DailyReport,
-  Prisma,
-  PrismaClient,
-} from "@/generated/prisma/client";
+import { DailyReport, Prisma, PrismaClient } from "@/generated/prisma/client";
 import { GenericRepository } from "../base/generic.repository";
-
 
 export class DailyReportRepository extends GenericRepository<
   DailyReport,
@@ -33,6 +28,14 @@ export class DailyReportRepository extends GenericRepository<
     return this.prisma.dailyReport.findUnique({
       where: {
         reportDate,
+      },
+    });
+  }
+
+  async findLatest(): Promise<DailyReport | null> {
+    return this.prisma.dailyReport.findFirst({
+      orderBy: {
+        reportDate: "desc",
       },
     });
   }

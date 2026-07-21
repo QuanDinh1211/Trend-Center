@@ -477,8 +477,7 @@ export const CrawlerOrderByRelevanceFieldEnum = {
   name: 'name',
   platformId: 'platformId',
   cron: 'cron',
-  description: 'description',
-  lastStatus: 'lastStatus'
+  description: 'description'
 } as const
 
 export type CrawlerOrderByRelevanceFieldEnum = (typeof CrawlerOrderByRelevanceFieldEnum)[keyof typeof CrawlerOrderByRelevanceFieldEnum]

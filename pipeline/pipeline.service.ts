@@ -26,7 +26,7 @@ export class PipelineService implements IPipeline {
     new ReportStage(),
   ];
 
-  async run(): Promise<void> {
+  async run(): Promise<StageContext> {
     let context: StageContext = {};
 
     for (const stage of this.stages) {
@@ -36,5 +36,6 @@ export class PipelineService implements IPipeline {
     }
 
     console.log("Pipeline Finished");
+    return context;
   }
 }

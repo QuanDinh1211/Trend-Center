@@ -18,6 +18,18 @@ export interface AggregatedPlatform {
   commissionRate?: number;
 
   commissionAmount?: number;
+
+  platformCode?: string;
+
+  platformProductId?: string;
+
+  shopId?: string;
+
+  thumbnail?: string;
+
+  stock?: number;
+
+  lastSync?: Date;
 }
 
 export interface AggregatedVideo {

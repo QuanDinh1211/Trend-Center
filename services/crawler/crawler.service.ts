@@ -8,8 +8,12 @@ export class CrawlerService
   implements
     IService<Crawler, Prisma.CrawlerCreateInput, Prisma.CrawlerUpdateInput>
 {
-  constructor(private readonly repository: CrawlerRepository) {
+  private readonly repository: CrawlerRepository;
+
+  constructor(repository?: CrawlerRepository) {
     super();
+
+    this.repository = repository ?? new CrawlerRepository(this.prisma);
   }
 
   async getAll(): Promise<Crawler[]> {

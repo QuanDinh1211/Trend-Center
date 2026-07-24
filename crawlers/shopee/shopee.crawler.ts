@@ -18,8 +18,10 @@ export class ShopeeCrawler implements ICrawler<any> {
 
   readonly name = "Shopee";
 
+  private readonly enabled = true;
+
   isEnabled(): boolean {
-    return true;
+    return this.enabled;
   }
 
   async crawl(): Promise<CrawlResult<any>> {

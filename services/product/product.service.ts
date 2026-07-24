@@ -8,8 +8,12 @@ export class ProductService
   implements
     IService<Product, Prisma.ProductCreateInput, Prisma.ProductUpdateInput>
 {
-  constructor(private readonly repository: ProductRepository) {
+  private readonly repository: ProductRepository;
+
+  constructor(repository?: ProductRepository) {
     super();
+
+    this.repository = repository ?? new ProductRepository(this.prisma);
   }
 
   async getAll(): Promise<Product[]> {

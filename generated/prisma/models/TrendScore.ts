@@ -335,10 +335,10 @@ export type TrendScoreOrderByWithRelationInput = {
 
 export type TrendScoreWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  productId?: string
   AND?: Prisma.TrendScoreWhereInput | Prisma.TrendScoreWhereInput[]
   OR?: Prisma.TrendScoreWhereInput[]
   NOT?: Prisma.TrendScoreWhereInput | Prisma.TrendScoreWhereInput[]
-  productId?: Prisma.StringFilter<"TrendScore"> | string
   googleScore?: Prisma.DecimalNullableFilter<"TrendScore"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   tiktokScore?: Prisma.DecimalNullableFilter<"TrendScore"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   shopeeScore?: Prisma.DecimalNullableFilter<"TrendScore"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -351,7 +351,7 @@ export type TrendScoreWhereUniqueInput = Prisma.AtLeast<{
   recommendation?: Prisma.StringNullableFilter<"TrendScore"> | string | null
   calculatedAt?: Prisma.DateTimeFilter<"TrendScore"> | Date | string
   product?: Prisma.XOR<Prisma.ProductScalarRelationFilter, Prisma.ProductWhereInput>
-}, "id">
+}, "id" | "productId">
 
 export type TrendScoreOrderByWithAggregationInput = {
   id?: Prisma.SortOrder

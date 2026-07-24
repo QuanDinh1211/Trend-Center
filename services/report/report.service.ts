@@ -15,13 +15,26 @@ export class ReportService
       Prisma.DailyReportUpdateInput
     >
 {
+  private readonly repository: DailyReportRepository;
+  private readonly productRepository: ProductRepository;
+  private readonly keywordRepository: KeywordRepository;
+  private readonly trendRepository: TrendScoreRepository;
+
   constructor(
-    private readonly repository: DailyReportRepository,
-    private readonly productRepository: ProductRepository,
-    private readonly keywordRepository: KeywordRepository,
-    private readonly trendRepository: TrendScoreRepository,
+    repository?: DailyReportRepository,
+    productRepository?: ProductRepository,
+    keywordRepository?: KeywordRepository,
+    trendRepository?: TrendScoreRepository,
   ) {
     super();
+
+    this.repository = repository ?? new DailyReportRepository(this.prisma);
+    this.productRepository =
+      productRepository ?? new ProductRepository(this.prisma);
+    this.keywordRepository =
+      keywordRepository ?? new KeywordRepository(this.prisma);
+    this.trendRepository =
+      trendRepository ?? new TrendScoreRepository(this.prisma);
   }
 
   async getAll(): Promise<DailyReport[]> {

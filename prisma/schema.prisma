@@ -221,6 +221,8 @@ model Video {
   @@index([platformId])
   @@index([creatorId])
 
+  @@unique([platformId, videoId])
+
   @@map("videos")
 }
 
@@ -245,6 +247,7 @@ model TrendScore {
   // Quan hệ
   product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
+  @@unique([productId])
   @@index([productId])
 
   @@map("trend_scores")

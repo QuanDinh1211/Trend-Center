@@ -16,8 +16,12 @@ export class TikTokCrawler implements ICrawler<any> {
     private readonly mapper = new TikTokMapper(),
   ) {}
 
-  readonly name = "Shopee";
-  readonly isEnabled = true;
+  readonly name = "TikTok";
+  private readonly enabled = true;
+
+  isEnabled(): boolean {
+    return this.enabled;
+  }
 
   async crawl(): Promise<CrawlResult<any>> {
     const startedAt = new Date();

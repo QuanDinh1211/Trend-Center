@@ -11,8 +11,12 @@ export class TrendService
       Prisma.TrendScoreUpdateInput
     >
 {
-  constructor(private readonly repository: TrendScoreRepository) {
+  private readonly repository: TrendScoreRepository;
+
+  constructor(repository?: TrendScoreRepository) {
     super();
+
+    this.repository = repository ?? new TrendScoreRepository(this.prisma);
   }
 
   async getAll(): Promise<TrendScore[]> {
@@ -25,6 +29,12 @@ export class TrendService
 
   async create(data: Prisma.TrendScoreCreateInput): Promise<TrendScore> {
     return this.repository.create(data);
+  }
+
+  async saveTrendScore(
+    data: Prisma.TrendScoreUncheckedCreateInput,
+  ): Promise<TrendScore> {
+    return this.repository.upsert(data);
   }
 
   async update(

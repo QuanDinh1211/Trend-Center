@@ -47,6 +47,32 @@ export class TrendScoreRepository extends GenericRepository<
     });
   }
 
+  async upsert(
+    data: Prisma.TrendScoreUncheckedCreateInput,
+  ): Promise<TrendScore> {
+    return this.prisma.trendScore.upsert({
+      where: {
+        productId: data.productId,
+      },
+
+      update: {
+        googleScore: data.googleScore,
+        tiktokScore: data.tiktokScore,
+        shopeeScore: data.shopeeScore,
+        videoScore: data.videoScore,
+        priceScore: data.priceScore,
+        commissionScore: data.commissionScore,
+        competitionScore: data.competitionScore,
+        growthScore: data.growthScore,
+        finalScore: data.finalScore,
+        recommendation: data.recommendation,
+        calculatedAt: data.calculatedAt,
+      },
+
+      create: data,
+    });
+  }
+
   async upsertByProductId(
     productId: string,
     data: Prisma.TrendScoreCreateInput | Prisma.TrendScoreUpdateInput,

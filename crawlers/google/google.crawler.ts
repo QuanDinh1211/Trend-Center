@@ -17,8 +17,10 @@ export class GoogleCrawler implements ICrawler<any> {
 
   readonly name = "Google";
 
+  private readonly enabled = true;
+
   isEnabled(): boolean {
-    return true;
+    return this.enabled;
   }
 
   async crawl(): Promise<CrawlResult<any>> {

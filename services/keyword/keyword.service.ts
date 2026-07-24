@@ -8,8 +8,12 @@ export class KeywordService
   implements
     IService<Keyword, Prisma.KeywordCreateInput, Prisma.KeywordUpdateInput>
 {
-  constructor(private readonly repository: KeywordRepository) {
+  private readonly repository: KeywordRepository;
+
+  constructor(repository?: KeywordRepository) {
     super();
+
+    this.repository = repository ?? new KeywordRepository(this.prisma);
   }
 
   async getAll(): Promise<Keyword[]> {

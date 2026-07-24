@@ -8,8 +8,12 @@ export class CategoryService
   implements
     IService<Category, Prisma.CategoryCreateInput, Prisma.CategoryUpdateInput>
 {
-  constructor(private readonly repository: CategoryRepository) {
+  private readonly repository: CategoryRepository;
+
+  constructor(repository?: CategoryRepository) {
     super();
+
+    this.repository = repository ?? new CategoryRepository(this.prisma);
   }
 
   async getAll(): Promise<Category[]> {
